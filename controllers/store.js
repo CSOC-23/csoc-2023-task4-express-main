@@ -18,7 +18,9 @@ var getAllBooks = (req, res) => {
 }
 
 var getBook = (req, res) => {
-    book.findOne({_id:req.body.bid})
+    const foundbookid=req.params.id
+
+    book.findByID(foundbookid)
     .then((bookfound)=>{
         res.render("book_detail",{
             book:bookfound,
@@ -50,6 +52,26 @@ var getLoanedBooks = (req, res) => {
 }
 
 var issueBook = (req, res) => {
+    const requestedbookid=req.body.bid;
+    book.findByID(requestedbookid)
+    .then((foundbook)=>{
+        if(foundbook.available_copies!==0){
+           res.send("Book_issued")
+           foundbook.available_copies=foundbook.available_copies-1;
+           foundbook.save();
+        }
+        else{
+            res.send("No copies available")
+        }
+    })
+    .catch((err)=>{
+        console.log(err)
+
+    })
+
+
+   
+
    
 
 
