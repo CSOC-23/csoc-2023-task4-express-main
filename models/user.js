@@ -5,9 +5,19 @@ var userSchema=new mongoose.Schema({
 
 	//TODO: DEFINE USERNAME AND PASSSWORD ATTRIBUTES
 
-
+    userName: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
     loaned_books:[
         //TODO: embed reference to id's of book copies loaned by this particular user in this array
+        type =mongoose.Schema.Types.ObjectId,
+        ref="bookid"
     ]
 })
 userSchema.plugin(passportLocal);
