@@ -1,11 +1,21 @@
 const express = require("express");
 const app = express();
+
 var mongoose = require("mongoose");
 var passport = require("passport");
 var auth = require("./controllers/auth");
 var store = require("./controllers/store");
+
 var User = require("./models/user");
+var Book = require("./models/book");
+var Bookcopy = require("./models/bookCopy");
 var localStrategy = require("passport-local");
+const cors = require("cors")
+
+
+// Load environment variables from .env file
+require("dotenv").config();
+
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
 var port = process.env.PORT || 3000;
@@ -20,6 +30,8 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+
 
 app.use(passport.initialize()); //middleware that initialises Passport.
 app.use(passport.session());
@@ -36,11 +48,26 @@ app.use(function (req, res, next) {
   next();
 });
 
+
+
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+})
+.then(() => {
+  console.log("Connected to MongoDB Atlas!");
+})
+.catch((err) => {
+  console.error("Error connecting to MongoDB Atlas:", err);
+});
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
 });
+
+
 
 /*-----------------Store ROUTES
 TODO: Your task is to complete below controllers in controllers/store.js
@@ -48,21 +75,27 @@ If you need to add any new route add it here and define its controller
 controllers folder.
 */
 
-app.get("/books", store.getAllBooks);
+app.get("/books", cors(), store.getAllBooks);
 
-app.get("/book/:id", store.getBook);
+app.get("/book/:id", cors(), store.getBook);
 
 app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
+middleware.isLoggedIn,
+store.getLoanedBooks);
 
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+middleware.isLoggedIn,
 store.issueBook);
 
-app.post("/books/search-book", store.searchBooks);
+app.post("/books/search-book", cors(), store.searchBooks);
+
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.get("/books/return/:id", middleware.isLoggedIn, store.returnBook);
+
+
 
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
