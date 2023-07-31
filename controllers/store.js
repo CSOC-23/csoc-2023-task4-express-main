@@ -15,13 +15,38 @@ var getLoanedBooks = (req, res) => {
 var issueBook = (req, res) => {
     
     // TODO: Extract necessary book details from request
-    // return with appropriate status
-    // Optionally redirect to page or display on same
+    let {title,
+    genre,
+    author,
+    description,
+    rating,
+    mrp,
+    available_copies
+    }=req.body;
+    if (!title||
+        !genre||
+        !author||
+        !description||
+        !rating||
+        !mrp||
+        !available_copies
+        
+    ) {
+        return res.status(400).json({
+            success: false,
+            message: "All Fields are Mandatory",
+        });
+    }
 }
 
 var searchBooks = (req, res) => {
     // TODO: extract search details
+    let {title,
+        author,
+        genre
+        }=req.body;
     // query book model on these details
+    
     // render page with the above details
 }
 

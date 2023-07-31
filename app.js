@@ -37,6 +37,13 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+mongoose.connect('mongodb://localhost:27017/myDatabase',
+{
+  useNewUrlParser:true,
+  useUnifiedTopology:true
+})
+.then(()=>{console.log("DB Connection succcessful")})
+.catch(()=>{console.log("Received an error")});
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -54,8 +61,10 @@ app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
-
+);
+app.get('/dashboard', middleware.isLoggedIn, (req, res) => {
+    res.render('dashboard');
+});
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
 store.issueBook);

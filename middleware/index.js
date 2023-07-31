@@ -6,6 +6,9 @@ middlewareObj.isLoggedIn=function(req,res,next){
     If user is logged in: Redirect to next page
     else, redirect to login page
     */
-	}
+    app.get('/dashboard', middleware.isLoggedIn, (req, res) => {
+        res.render('login');
+    });
+}
 
     module.exports=middlewareObj;
