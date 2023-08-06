@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
 var mongoose = require("mongoose");
+const db=require('./config/mongoose')
 var passport = require("passport");
 var auth = require("./controllers/auth");
 var store = require("./controllers/store");
 var User = require("./models/user");
+var Book = require("./models/book");
+var BookCopy = require("./models/bookCopy");
 var localStrategy = require("passport-local");
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
@@ -37,6 +40,7 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -72,7 +76,7 @@ controllers folder.
 
 app.get("/login", auth.getLogin);
 
-app.post("/login", auth.postLogin);
+app.post('/login', auth.postLogin);
 
 app.get("/register", auth.getRegister);
 
