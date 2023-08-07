@@ -15,18 +15,16 @@
         </tr>
       </thead>
       <tbody>
-        <% books.forEach(function(copy,i){%>
-        <tr>
-          <th scope="row"><%= i %></th>
-          <td><a href="/book/<%=copy.book.id%>/"><%= copy.book.title %></a></td>
-          <td><%= copy.book.author %></td>
-          <td><%= copy.book.genre %></td>
-          <td><%= copy.borrow_date %></td>
-          <td>
-            <!-- TODO: Create a Return book tag that is used for returning the book -->
-          </td>
-        </tr>
-        <%})%>
+        <tbody>
+          <tr>
+            <th scope="row"></th>
+            <td><%= book.title %></td>
+            <td><%= book.author %></td>
+            <td><%= book.genre %></td>
+            <td>
+              <!-- TODO: Create a Return book tag that is used for returning the book -->
+            </td>
+        </tbody>
       </tbody>
     </table>
   </body>
