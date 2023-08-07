@@ -10,7 +10,7 @@ var bookCopySchema=new mongoose.Schema({
     type:Boolean,
     required:true
  }, //TRUE IF AVAILABLE TO BE ISSUED, ELSE FALSE 
- borrow_data:{
+ borrow_date:{
     type:Number,
     required:true
  }, //date when book was borrowed
